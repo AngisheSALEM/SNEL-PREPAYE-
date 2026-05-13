@@ -128,8 +128,21 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(210, 100%, 23%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(47, 65%, 53%, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/40 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-xl;
   }
 }
