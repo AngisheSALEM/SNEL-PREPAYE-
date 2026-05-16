@@ -5,64 +5,11 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 568ms
+✓ Ready in 526ms
 
 ○ Compiling / ...
- GET / 200 in 11.7s (next.js: 11.2s, application-code: 550ms)
- GET / 200 in 90ms (next.js: 6ms, application-code: 84ms)
- GET /admin 200 in 1173ms (next.js: 977ms, application-code: 196ms)
-[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <main className="flex-1 fle...">
-      <header>
-      <div className="flex-1 ove...">
-        <div>
-        <div className="grid grid-...">
-          <Card className="lg:col-spa...">
-            <div data-slot="card" data-size="default" className={"group/ca..."}>
-              <CardHeader>
-              <CardContent>
-                <div data-slot="card-content" className="px-4 group...">
-                  <Table>
-                    <div data-slot="table-cont..." className="relative w...">
-                      <table data-slot="table" className="w-full cap...">
-                        <TableHeader>
-                        <TableBody>
-                          <tbody data-slot="table-body" className={"[&_tr:la..."}>
-                            <TableRow>
-                              <tr data-slot="table-row" className="border-b t...">
-                                <TableCell className="font-mediu...">
-                                  <td
-                                    data-slot="table-cell"
-                                    className={"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font..."}
-                                  >
-+                                   04:05 PM
--                                   04:04 PM
-                                ...
-                            ...
-          ...
-
-    at <unknown> (https://react.dev/link/hydration-mismatch)
-    at td (<anonymous>)
-    at TableCell (src/components/ui/table.tsx:83:5)
-    at <unknown> (src/app/admin/page.tsx:196:25)
-    at Array.map (<anonymous>)
-    at AdminPage (src/app/admin/page.tsx:194:35)
-  81 | function TableCell({ className, ...props }: React.ComponentProps<"td">) {
-  82 |   return (
-> 83 |     <td
-     |     ^
-  84 |       data-slot="table-cell"
-  85 |       className={cn(
-  86 |         "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+ HEAD / 200 in 3.7s (next.js: 3.4s, application-code: 342ms)
+ GET / 200 in 204ms (next.js: 22ms, application-code: 183ms)
+ GET /buy 200 in 2.8s (next.js: 2.7s, application-code: 74ms)
+ GET / 200 in 104ms (next.js: 4ms, application-code: 100ms)
+ GET /buy 200 in 63ms (next.js: 5ms, application-code: 58ms)
