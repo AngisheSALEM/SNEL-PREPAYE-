@@ -8,18 +8,18 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen text-foreground selection:bg-opere-cyan/30">
       {/* Header */}
-      <header className="px-4 lg:px-6 h-20 flex items-center glass sticky top-0 z-50 border-b border-white/5">
+      <header className="px-4 lg:px-6 h-20 flex items-center bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-border">
         <Link className="flex items-center justify-center gap-2 group" href="/">
-          <div className="p-2 bg-snel-gold/10 rounded-xl group-hover:bg-snel-gold/20 transition-colors">
+          <div className="p-2 bg-snel-gold/20 rounded-xl group-hover:bg-snel-gold/20 transition-colors">
             <Zap className="h-6 w-6 text-snel-gold fill-snel-gold" />
           </div>
           <span className="text-2xl font-black tracking-tighter text-snel-gold">SNEL-PAY</span>
         </Link>
         <nav className="ml-auto flex gap-6 sm:gap-8">
-          <Link className="text-sm font-bold uppercase tracking-widest text-foreground/70 hover:text-snel-gold transition-colors" href="#features">
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#features">
             Avantages
           </Link>
-          <Link className="text-sm font-bold uppercase tracking-widest text-foreground/70 hover:text-snel-gold transition-colors" href="#how-it-works">
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#how-it-works">
             Guide
           </Link>
         </nav>
@@ -31,14 +31,11 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center space-y-8 text-center">
               <div className="space-y-4 max-w-4xl">
-                <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-snel-gold/10 border border-snel-gold/20 text-snel-gold text-[10px] font-black uppercase tracking-widest">
-                  L&apos;Énergie du Futur, Aujourd&apos;hui
-                </div>
                 <h1 className="text-4xl font-black tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl/none leading-[1.1]">
                   L&apos;énergie à <span className="text-snel-gold">portée de main</span>,<br />
                   <span className="text-gradient">instantanément.</span>
                 </h1>
-                <p className="mx-auto max-w-[800px] text-foreground/60 md:text-xl font-medium leading-relaxed mt-6">
+                <p className="mx-auto max-w-[800px] text-foreground md:text-xl font-medium leading-relaxed mt-6">
                   Rechargez votre compteur SNEL prépayé en quelques secondes. Une expérience premium, fluide et entièrement sécurisée.
                 </p>
               </div>
@@ -63,7 +60,7 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6 mx-auto">
              <div className="text-center mb-16 space-y-2">
                 <h2 className="text-3xl font-black tracking-tight sm:text-5xl">Pourquoi choisir <span className="text-snel-gold">SNEL-PAY</span>?</h2>
-                <p className="text-foreground/50 font-medium">La simplicité au service de votre confort.</p>
+                <p className="text-foreground/70 font-medium">La simplicité au service de votre confort.</p>
              </div>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {[
@@ -71,13 +68,13 @@ export default function LandingPage() {
                 { icon: ShieldCheck, title: "Sécurité Totale", desc: "Vos transactions sont protégées par les plus hauts standards de sécurité bancaire.", color: "text-opere-emerald" },
                 { icon: Smartphone, title: "Multi-Opérateurs", desc: "Compatible avec M-Pesa, Airtel Money et Orange Money pour plus de flexibilité.", color: "text-opere-blue" }
               ].map((feature, i) => (
-                <Card key={i} className="group border-white/5 bg-white/5 backdrop-blur-xl">
+                <Card key={i} className="group border-border bg-muted/50 backdrop-blur-xl">
                   <CardContent className="pt-8 flex flex-col items-center text-center space-y-4">
-                    <div className={cn("p-5 rounded-2xl bg-foreground/5 group-hover:bg-foreground/10 transition-colors", feature.color)}>
+                    <div className={cn("p-5 rounded-2xl bg-muted group-hover:bg-foreground/10 transition-colors", feature.color)}>
                       <feature.icon className="h-10 w-10" />
                     </div>
                     <h3 className="text-2xl font-bold">{feature.title}</h3>
-                    <p className="text-foreground/60 leading-relaxed">{feature.desc}</p>
+                    <p className="text-foreground leading-relaxed">{feature.desc}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -87,11 +84,11 @@ export default function LandingPage() {
 
         {/* How it works Section */}
         <section id="how-it-works" className="w-full py-24 md:py-32 relative">
-           <div className="absolute inset-0 bg-snel-blue/5 -z-10" />
+           <div className="absolute inset-0 bg-snel-blue/10 -z-10" />
           <div className="container px-4 md:px-6 mx-auto">
             <div className="text-center mb-16 space-y-2">
                 <h2 className="text-3xl font-black tracking-tight sm:text-5xl">Comment ça marche ?</h2>
-                <p className="text-foreground/50 font-medium">Trois étapes simples pour retrouver la lumière.</p>
+                <p className="text-foreground/70 font-medium">Trois étapes simples pour retrouver la lumière.</p>
              </div>
             <div className="grid gap-12 md:grid-cols-3 pt-8">
               {[
@@ -100,13 +97,13 @@ export default function LandingPage() {
                 { step: "3", title: "Activez votre crédit", desc: "Recevez instantanément votre jeton de 20 chiffres par SMS." }
               ].map((item, i) => (
                 <div key={i} className="relative group">
-                  <Card className="h-full border-white/5 bg-white/5 backdrop-blur-xl">
+                  <Card className="h-full border-border bg-muted/50 backdrop-blur-xl">
                     <CardContent className="pt-12">
                       <div className="absolute -top-6 left-6 w-14 h-14 bg-snel-gold text-snel-blue rounded-2xl flex items-center justify-center font-black text-2xl shadow-xl shadow-snel-gold/20 transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
                         {item.step}
                       </div>
                       <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                      <p className="text-foreground/60">{item.desc}</p>
+                      <p className="text-foreground">{item.desc}</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -128,26 +125,26 @@ export default function LandingPage() {
                     </Button>
                     </Link>
                 </CardContent>
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-snel-gold/10 rounded-full blur-3xl -ml-32 -mb-32" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-muted/50 rounded-full blur-3xl -mr-32 -mt-32" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-snel-gold/20 rounded-full blur-3xl -ml-32 -mb-32" />
             </Card>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 glass mt-auto">
+      <footer className="py-12 border-t border-border bg-background/80 backdrop-blur-md mt-auto">
         <div className="container px-4 md:px-6 mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <Zap className="h-6 w-6 text-snel-gold fill-snel-gold" />
             <span className="text-xl font-black text-snel-gold tracking-tighter">SNEL-PAY</span>
           </div>
-          <p className="text-sm font-medium text-foreground/40 text-center">© 2024 SNEL-PAY. Développé pour la modernité de la RDC.</p>
+          <p className="text-sm font-medium text-foreground/60 text-center">© 2024 SNEL-PAY. Développé pour la modernité de la RDC.</p>
           <div className="flex gap-8">
-            <Link className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-snel-gold transition-colors" href="#">
+            <Link className="text-[10px] font-black uppercase tracking-widest text-foreground/60 hover:text-snel-gold transition-colors" href="#">
               Conditions
             </Link>
-            <Link className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-snel-gold transition-colors" href="#">
+            <Link className="text-[10px] font-black uppercase tracking-widest text-foreground/60 hover:text-snel-gold transition-colors" href="#">
               Confidentialité
             </Link>
           </div>

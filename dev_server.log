@@ -5,10 +5,17 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 537ms
+✓ Ready in 528ms
 
 ○ Compiling / ...
- GET / 200 in 10.4s (next.js: 9.5s, application-code: 916ms)
+ GET / 200 in 5.9s (next.js: 5.1s, application-code: 748ms)
 ○ Compiling /buy ...
- GET /buy 200 in 4.6s (next.js: 4.5s, application-code: 115ms)
- GET /admin 200 in 2.1s (next.js: 1726ms, application-code: 384ms)
+ GET /buy 200 in 5.2s (next.js: 5.1s, application-code: 81ms)
+ GET / 200 in 140ms (next.js: 7ms, application-code: 134ms)
+ GET /buy 200 in 39ms (next.js: 5ms, application-code: 34ms)
+✓ Compiled in 251ms
+ GET / 200 in 172ms (next.js: 8ms, application-code: 164ms)
+ GET /buy 200 in 70ms (next.js: 6ms, application-code: 64ms)
+✓ Compiled in 121ms
+ GET / 200 in 123ms (next.js: 7ms, application-code: 116ms)
+ GET /buy 200 in 36ms (next.js: 6ms, application-code: 30ms)
