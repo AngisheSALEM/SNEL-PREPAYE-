@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { DeepSpaceBackground } from "@/components/background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,10 +20,9 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${inter.variable} h-full antialiased dark`}
+      className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        <DeepSpaceBackground />
         {children}
       </body>
     </html>
