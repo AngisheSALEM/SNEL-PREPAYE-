@@ -1,0 +1,23 @@
+<<<<<<< SEARCH
+        <nav className="ml-auto flex gap-6 sm:gap-8">
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#features">
+            Avantages
+          </Link>
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#how-it-works">
+            Guide
+          </Link>
+        </nav>
+=======
+        <nav className="ml-auto flex items-center gap-6 sm:gap-8">
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#features">
+            Avantages
+          </Link>
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#how-it-works">
+            Guide
+          </Link>
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="/login">
+            Connexion
+          </Link>
+          <ThemeToggle />
+        </nav>
+>>>>>>> REPLACE

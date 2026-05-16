@@ -6,14 +6,13 @@ import {
   Zap,
   Smartphone,
   ArrowLeft,
-
   CheckCircle2,
   Copy,
   Share2,
   ArrowRight,
   ShieldCheck,
-  Info
 } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,33 +41,28 @@ import {
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { generateSTSToken } from "@/lib/sts";
-import { cn } from "@/lib/utils";
 
-const QUICK_AMOUNTS = [5000, 10000, 50000];
-
-export default function PurchasePage() {
+export default function BuyPage() {
   const [meterNumber, setMeterNumber] = useState("");
   const [amount, setAmount] = useState("");
-  const [provider, setProvider] = useState<string | null>(null);
+  const [provider, setProvider] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [generatedToken, setGeneratedToken] = useState<string | null>(null);
 
-  const handleStartPayment = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (meterNumber.length !== 11) return;
-    if (!amount || !provider) return;
     setShowPaymentModal(true);
   };
 
-  const simulatePayment = () => {
+  const simulatePayment = async () => {
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setShowPaymentModal(false);
-      const token = generateSTSToken(meterNumber);
-      setGeneratedToken(token);
-    }, 2500);
+    // Simulate API delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const token = generateSTSToken(meterNumber);
+    setGeneratedToken(token);
+    setIsProcessing(false);
+    setShowPaymentModal(false);
   };
 
   const copyToken = () => {
@@ -78,79 +72,69 @@ export default function PurchasePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col selection:bg-opere-cyan/30">
+    <div className="min-h-screen bg-background selection:bg-snel-gold/30 flex flex-col">
+      {/* Navigation */}
       <header className="px-4 lg:px-6 h-20 flex items-center bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-border">
-        <Link className="flex items-center gap-2 group" href="/">
-          <div className="p-2 bg-snel-gold/10 rounded-xl group-hover:bg-snel-gold/20 transition-colors">
-            <ArrowLeft className="h-5 w-5 text-snel-gold" />
-          </div>
-          <span className="text-sm font-bold uppercase tracking-widest text-foreground/70 group-hover:text-snel-gold transition-colors">Retour</span>
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-foreground/60 hover:text-snel-gold transition-colors font-black uppercase tracking-widest text-[10px]"
+        >
+          <ArrowLeft className="w-4 h-4" /> Retour
         </Link>
-        <div className="ml-auto flex items-center gap-2">
-            <Zap className="h-5 w-5 text-snel-gold fill-snel-gold" />
-            <span className="text-xl font-black text-snel-gold tracking-tighter">SNEL-PAY</span>
+        <Link className="flex items-center justify-center gap-2 group absolute left-1/2 -translate-x-1/2" href="/">
+          <div className="p-2 bg-snel-gold/20 rounded-xl">
+            <Zap className="h-6 w-6 text-snel-gold fill-snel-gold" />
+          </div>
+          <span className="text-2xl font-black tracking-tighter text-snel-gold">SNEL-PAY</span>
+        </Link>
+        <div className="ml-auto">
+          <ThemeToggle />
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-4 py-12 md:py-24 relative">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 py-12">
         <AnimatePresence mode="wait">
           {!generatedToken ? (
             <motion.div
               key="form"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, y: -20 }}
               className="w-full max-w-xl"
             >
-              <div className="mb-10 text-center space-y-2">
-                <h1 className="text-4xl font-black tracking-tight">Recharge de <span className="text-snel-gold">Crédit</span></h1>
-                <p className="text-foreground/50 font-medium">Saisissez les détails de votre compteur pour continuer.</p>
-              </div>
-
-              <Card className="border-border bg-muted/50 backdrop-blur-2xl shadow-3xl">
-                <CardHeader className="bg-snel-blue/10 border-b border-border px-8 py-8">
-                  <CardTitle className="text-2xl">Détails de l&apos;Achat</CardTitle>
-                  <CardDescription className="text-foreground/60 font-medium">Remplissez le formulaire ci-dessous</CardDescription>
+              <Card className="border-none bg-muted/50 backdrop-blur-2xl shadow-3xl overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-snel-blue via-snel-gold to-snel-blue" />
+                <CardHeader className="text-center pt-10">
+                  <CardTitle className="text-4xl font-black tracking-tight">Recharge Rapide</CardTitle>
+                  <CardDescription className="text-foreground/50 font-medium">Achetez votre crédit électricité en un instant.</CardDescription>
                 </CardHeader>
-                <CardContent className="p-8 space-y-8">
-                  <form onSubmit={handleStartPayment} className="space-y-8">
+                <CardContent className="px-8 pb-8">
+                  <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-3">
-                      <Label htmlFor="meter" className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Numéro du Compteur (11 chiffres)</Label>
-                      <div className="relative group">
-                        <Input
-                          id="meter"
-                          placeholder="Ex: 14253647586"
-                          value={meterNumber}
-                          onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, "").slice(0, 11))}
-                          className="h-16 pl-14 text-xl tracking-[0.2em] font-mono bg-muted/50 border-border focus:border-snel-gold/50 transition-all rounded-2xl"
-                          required
-                        />
-                        <Smartphone className="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-foreground/30 group-focus-within:text-snel-gold transition-colors" />
-                      </div>
-                      {meterNumber.length > 0 && meterNumber.length < 11 && (
-                        <p className="text-xs text-snel-gold/80 font-bold flex items-center gap-1">
-                          <Info className="w-3 h-3" /> Le numéro doit comporter 11 chiffres
-                        </p>
-                      )}
+                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Numéro de Compteur (11 chiffres)</Label>
+                      <Input
+                        type="text"
+                        placeholder="Ex: 04123456789"
+                        maxLength={11}
+                        value={meterNumber}
+                        onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, ""))}
+                        className="h-16 text-2xl font-mono font-bold bg-muted/50 border-border focus:border-snel-gold/50 rounded-xl"
+                        required
+                      />
                     </div>
 
-                    <div className="space-y-4">
-                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Montant de la Recharge (FC)</Label>
-                      <div className="grid grid-cols-3 gap-3">
-                        {QUICK_AMOUNTS.map((amt) => (
+                    <div className="space-y-3">
+                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Montant (FC)</Label>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        {["5000", "10000", "20000"].map((val) => (
                           <Button
-                            key={amt}
+                            key={val}
                             type="button"
                             variant="outline"
-                            className={cn(
-                              "h-14 font-black rounded-xl border-border transition-all",
-                              amount === amt.toString()
-                                ? "bg-snel-gold text-snel-blue border-snel-gold scale-[1.02]"
-                                : "bg-muted/50 hover:bg-muted"
-                            )}
-                            onClick={() => setAmount(amt.toString())}
+                            className={`h-12 font-bold rounded-xl border-border ${amount === val ? "bg-snel-gold text-snel-blue border-snel-gold" : "hover:bg-muted"}`}
+                            onClick={() => setAmount(val)}
                           >
-                            {amt.toLocaleString()}
+                            {Number(val).toLocaleString()}
                           </Button>
                         ))}
                       </div>
@@ -166,7 +150,7 @@ export default function PurchasePage() {
 
                     <div className="space-y-3">
                       <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Opérateur de Paiement</Label>
-                      <Select onValueChange={(val) => setProvider(val)} value={provider || ""} required>
+                      <Select onValueChange={(val) => setProvider(val || "")} value={provider || ""} required>
                         <SelectTrigger className="h-14 bg-muted/50 border-border rounded-xl">
                           <SelectValue placeholder="Choisir votre opérateur" />
                         </SelectTrigger>
@@ -218,9 +202,9 @@ export default function PurchasePage() {
                 <CardContent className="px-8 pb-10 space-y-8">
                   <div className="relative group">
                     <div className="absolute inset-0 bg-opere-cyan/10 blur-3xl rounded-full opacity-20 -z-10" />
-                    <div className="bg-muted border border-border p-10 rounded-3xl text-center space-y-4">
+                    <div className="bg-white border border-border p-10 rounded-3xl text-center space-y-4">
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-snel-gold">TOKEN DE RECHARGE (20 CHIFFRES)</p>
-                      <p className="text-4xl md:text-5xl font-mono font-black tracking-tight text-white selection:bg-snel-gold selection:text-snel-blue">
+                      <p className="text-4xl md:text-5xl font-mono font-black tracking-tight text-black selection:bg-snel-gold selection:text-snel-blue">
                         {generatedToken}
                       </p>
                     </div>
