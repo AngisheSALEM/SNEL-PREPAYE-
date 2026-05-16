@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { generateSTSToken } from "@/lib/sts";
+import { cn } from "@/lib/utils";
 
 export default function BuyPage() {
   const [meterNumber, setMeterNumber] = useState("");
@@ -50,88 +51,93 @@ export default function BuyPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [generatedToken, setGeneratedToken] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handlePurchase = (e: React.FormEvent) => {
     e.preventDefault();
     setShowPaymentModal(true);
   };
 
-  const simulatePayment = async () => {
+  const simulatePayment = () => {
     setIsProcessing(true);
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    const token = generateSTSToken(meterNumber);
-    setGeneratedToken(token);
-    setIsProcessing(false);
-    setShowPaymentModal(false);
+    setTimeout(() => {
+      const token = generateSTSToken(meterNumber);
+      setGeneratedToken(token);
+      setIsProcessing(false);
+      setShowPaymentModal(false);
+    }, 2000);
   };
 
   const copyToken = () => {
     if (generatedToken) {
-      navigator.clipboard.writeText(generatedToken.replace(/\s/g, ""));
+      navigator.clipboard.writeText(generatedToken);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background selection:bg-snel-gold/30 flex flex-col">
-      {/* Navigation */}
+    <div className="min-h-screen flex flex-col bg-background selection:bg-snel-gold/30">
       <header className="px-4 lg:px-6 h-20 flex items-center bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-border">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-foreground/60 hover:text-snel-gold transition-colors font-black uppercase tracking-widest text-[10px]"
-        >
-          <ArrowLeft className="w-4 h-4" /> Retour
-        </Link>
-        <Link className="flex items-center justify-center gap-2 group absolute left-1/2 -translate-x-1/2" href="/">
-          <div className="p-2 bg-snel-gold/20 rounded-xl">
+        <Link className="flex items-center justify-center gap-2 group" href="/">
+          <div className="p-2 bg-snel-gold/20 rounded-xl group-hover:bg-snel-gold/20 transition-colors">
             <Zap className="h-6 w-6 text-snel-gold fill-snel-gold" />
           </div>
           <span className="text-2xl font-black tracking-tighter text-snel-gold">SNEL-PAY</span>
         </Link>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-4">
           <ThemeToggle />
+          <Link href="/dashboard" className="hidden sm:block">
+            <Button variant="ghost" className="font-bold">Dashboard</Button>
+          </Link>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-4 py-12">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-10 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-snel-blue/5 rounded-full blur-[120px] -z-10" />
+
         <AnimatePresence mode="wait">
           {!generatedToken ? (
             <motion.div
               key="form"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               className="w-full max-w-xl"
             >
-              <Card className="border-none bg-muted/50 backdrop-blur-2xl shadow-3xl overflow-hidden">
-                <div className="h-2 bg-gradient-to-r from-snel-blue via-snel-gold to-snel-blue" />
-                <CardHeader className="text-center pt-10">
-                  <CardTitle className="text-4xl font-black tracking-tight">Recharge Rapide</CardTitle>
-                  <CardDescription className="text-foreground/50 font-medium">Achetez votre crédit électricité en un instant.</CardDescription>
+              <div className="mb-8">
+                <Link href="/" className="inline-flex items-center text-sm font-black uppercase tracking-widest text-foreground/40 hover:text-snel-gold transition-colors">
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Retour à l&apos;accueil
+                </Link>
+              </div>
+
+              <Card className="border-border bg-muted/50 backdrop-blur-xl shadow-2xl overflow-hidden">
+                <CardHeader className="space-y-2 pb-8 border-b border-border bg-muted/20">
+                  <CardTitle className="text-4xl font-black tracking-tight">Recharge <span className="text-snel-gold">Express</span></CardTitle>
+                  <CardDescription className="text-foreground/50 font-medium leading-relaxed">Saisissez vos informations pour générer un jeton STS.</CardDescription>
                 </CardHeader>
-                <CardContent className="px-8 pb-8">
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                <CardContent className="pt-10">
+                  <form onSubmit={handlePurchase} className="space-y-8">
                     <div className="space-y-3">
-                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Numéro de Compteur (11 chiffres)</Label>
+                      <Label htmlFor="meter" className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Numéro de Compteur (11 chiffres)</Label>
                       <Input
-                        type="text"
-                        placeholder="Ex: 04123456789"
-                        maxLength={11}
+                        id="meter"
+                        placeholder="Ex: 1425 3647 586"
                         value={meterNumber}
-                        onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, ""))}
-                        className="h-16 text-2xl font-mono font-bold bg-muted/50 border-border focus:border-snel-gold/50 rounded-xl"
+                        onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                        className="h-16 text-2xl font-mono font-bold tracking-[0.1em] bg-background/50 border-border focus:border-snel-gold/50 rounded-xl"
                         required
                       />
                     </div>
 
                     <div className="space-y-3">
-                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Montant (FC)</Label>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        {["5000", "10000", "20000"].map((val) => (
+                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Montant de la recharge (FC)</Label>
+                      <div className="grid grid-cols-3 gap-3 mb-4">
+                        {["5000", "10000", "20000", "50000", "100000"].map((val) => (
                           <Button
                             key={val}
                             type="button"
-                            variant="outline"
-                            className={`h-12 font-bold rounded-xl border-border ${amount === val ? "bg-snel-gold text-snel-blue border-snel-gold" : "hover:bg-muted"}`}
+                            variant={amount === val ? "default" : "outline"}
+                            className={cn(
+                              "h-12 font-bold rounded-xl border-border transition-all",
+                              amount === val ? "bg-snel-gold text-snel-blue" : "hover:bg-snel-gold/10"
+                            )}
                             onClick={() => setAmount(val)}
                           >
                             {Number(val).toLocaleString()}
@@ -241,7 +247,7 @@ export default function BuyPage() {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="p-8 bg-muted/50">
+                <CardFooter className="p-8 bg-muted/50 flex flex-col gap-3">
                   <Button
                     className="w-full h-16 text-lg font-black bg-snel-blue hover:bg-snel-blue/90 text-white rounded-2xl cursor-pointer"
                     onClick={() => {
@@ -253,6 +259,9 @@ export default function BuyPage() {
                   >
                     Effectuer un Nouvel Achat
                   </Button>
+                  <Link href="/dashboard" className="w-full">
+                    <Button variant="ghost" className="w-full h-12 font-bold rounded-xl">Retour au Dashboard</Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </motion.div>

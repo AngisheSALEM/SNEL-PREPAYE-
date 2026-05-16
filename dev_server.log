@@ -5,12 +5,20 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 531ms
+✓ Ready in 742ms
 
 ○ Compiling / ...
- GET / 200 in 4.6s (next.js: 3.9s, application-code: 728ms)
- GET /login 200 in 1012ms (next.js: 968ms, application-code: 43ms)
- GET /signup 200 in 753ms (next.js: 712ms, application-code: 41ms)
- GET /dashboard 200 in 670ms (next.js: 635ms, application-code: 34ms)
-○ Compiling /buy ...
- GET /buy 200 in 3.8s (next.js: 3.7s, application-code: 56ms)
+ GET / 200 in 5.5s (next.js: 5.0s, application-code: 503ms)
+ GET /login 200 in 1064ms (next.js: 951ms, application-code: 113ms)
+ GET /dashboard 200 in 994ms (next.js: 928ms, application-code: 66ms)
+ GET /dashboard/history 200 in 841ms (next.js: 777ms, application-code: 64ms)
+ GET /dashboard/payments 200 in 829ms (next.js: 735ms, application-code: 95ms)
+ GET /dashboard/settings 200 in 1226ms (next.js: 1189ms, application-code: 38ms)
+ GET /admin 200 in 1096ms (next.js: 933ms, application-code: 163ms)
+ GET / 200 in 82ms (next.js: 4ms, application-code: 78ms)
+ GET /login 200 in 142ms (next.js: 18ms, application-code: 123ms)
+ GET /dashboard 200 in 55ms (next.js: 7ms, application-code: 47ms)
+ GET /dashboard/history 200 in 51ms (next.js: 27ms, application-code: 24ms)
+ GET /dashboard/payments 200 in 32ms (next.js: 5ms, application-code: 27ms)
+ GET /dashboard/settings 200 in 41ms (next.js: 4ms, application-code: 37ms)
+ GET /admin 200 in 81ms (next.js: 4ms, application-code: 77ms)
