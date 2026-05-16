@@ -9,7 +9,7 @@ export function DeepSpaceBackground() {
   useEffect(() => {
     // This is the standard way to handle hydration in Next.js for client-only components
     // We set mounted to true after the component has mounted on the client
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
 
   if (!mounted) {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Zap, ShieldCheck, Clock, Smartphone, ArrowRight, MessageCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,19 +16,23 @@ export default function LandingPage() {
           </div>
           <span className="text-2xl font-black tracking-tighter text-snel-gold">SNEL-PAY</span>
         </Link>
-        <nav className="ml-auto flex gap-6 sm:gap-8">
+        <nav className="ml-auto flex items-center gap-6 sm:gap-8">
           <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#features">
             Avantages
           </Link>
           <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#how-it-works">
             Guide
           </Link>
+          <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="/login">
+            Connexion
+          </Link>
+          <ThemeToggle />
         </nav>
       </header>
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-20 md:py-32 lg:py-48 overflow-hidden">
+        <section className="w-full pt-10 pb-20 md:pt-16 md:pb-32 lg:pt-20 lg:pb-48 overflow-hidden">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center space-y-8 text-center">
               <div className="space-y-4 max-w-4xl">
