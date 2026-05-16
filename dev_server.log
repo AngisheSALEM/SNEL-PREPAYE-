@@ -5,11 +5,10 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 526ms
+✓ Ready in 537ms
 
 ○ Compiling / ...
- HEAD / 200 in 3.7s (next.js: 3.4s, application-code: 342ms)
- GET / 200 in 204ms (next.js: 22ms, application-code: 183ms)
- GET /buy 200 in 2.8s (next.js: 2.7s, application-code: 74ms)
- GET / 200 in 104ms (next.js: 4ms, application-code: 100ms)
- GET /buy 200 in 63ms (next.js: 5ms, application-code: 58ms)
+ GET / 200 in 10.4s (next.js: 9.5s, application-code: 916ms)
+○ Compiling /buy ...
+ GET /buy 200 in 4.6s (next.js: 4.5s, application-code: 115ms)
+ GET /admin 200 in 2.1s (next.js: 1726ms, application-code: 384ms)
