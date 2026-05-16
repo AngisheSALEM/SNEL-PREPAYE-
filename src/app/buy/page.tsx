@@ -1,6 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Zap,
+  Smartphone,
+  ArrowLeft,
+
+  CheckCircle2,
+  Copy,
+  Share2,
+  ArrowRight,
+  ShieldCheck,
+  Info
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -9,30 +25,28 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { Zap, Smartphone, Copy, Share2, CheckCircle2, CreditCard } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { generateSTSToken } from "@/lib/sts";
+import { cn } from "@/lib/utils";
 
 const QUICK_AMOUNTS = [5000, 10000, 50000];
 
-export default function ClientPage() {
+export default function PurchasePage() {
   const [meterNumber, setMeterNumber] = useState("");
   const [amount, setAmount] = useState("");
   const [provider, setProvider] = useState<string | null>(null);
@@ -49,13 +63,12 @@ export default function ClientPage() {
 
   const simulatePayment = () => {
     setIsProcessing(true);
-    // Simulate USSD/Payment gateway delay
     setTimeout(() => {
       setIsProcessing(false);
       setShowPaymentModal(false);
       const token = generateSTSToken(meterNumber);
       setGeneratedToken(token);
-    }, 2000);
+    }, 2500);
   };
 
   const copyToken = () => {
@@ -64,201 +77,254 @@ export default function ClientPage() {
     }
   };
 
-  if (generatedToken) {
-    return (
-      <main className="min-h-screen bg-slate-50 flex flex-col items-center p-4 pt-12 md:pt-24">
-        <Card className="w-full max-w-md border-t-4 border-t-emerald-500 shadow-lg">
-          <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-slate-800">Achat Réussi !</CardTitle>
-            <CardDescription>Votre jeton de recharge SNEL est prêt</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="bg-slate-900 text-white p-6 rounded-xl text-center shadow-inner">
-              <p className="text-slate-400 text-sm mb-2 uppercase tracking-widest font-semibold">TOKEN STS (20 CHIFFRES)</p>
-              <p className="text-3xl font-mono font-bold tracking-tighter sm:text-4xl text-yellow-400">
-                {generatedToken}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="flex gap-2" onClick={copyToken}>
-                <Copy className="w-4 h-4" /> Copier
-              </Button>
-              <Button variant="outline" className="flex gap-2">
-                <Share2 className="w-4 h-4" /> Partager
-              </Button>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 text-sm text-slate-500 space-y-1">
-              <div className="flex justify-between">
-                <span>Compteur:</span>
-                <span className="font-semibold text-slate-700">{meterNumber}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Montant:</span>
-                <span className="font-semibold text-slate-700">{Number(amount).toLocaleString()} FC</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Énergie approx:</span>
-                <span className="font-semibold text-emerald-600">{(Number(amount) / 330).toFixed(1)} kWh</span>
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button
-              className="w-full bg-[#003366] hover:bg-[#002244]"
-              onClick={() => {
-                setGeneratedToken(null);
-                setAmount("");
-                setMeterNumber("");
-                setProvider("");
-              }}
-            >
-              Nouvel Achat
-            </Button>
-          </CardFooter>
-        </Card>
-      </main>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-slate-50 flex flex-col items-center p-4 pt-8 md:pt-16">
-      <div className="mb-8 text-center">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Zap className="w-8 h-8 text-[#D4AF37] fill-[#D4AF37]" />
-          <h1 className="text-3xl font-black text-[#003366] tracking-tight">SNEL-PAY</h1>
+    <div className="min-h-screen flex flex-col selection:bg-opere-cyan/30">
+      <header className="px-4 lg:px-6 h-20 flex items-center glass sticky top-0 z-50 border-b border-white/5">
+        <Link className="flex items-center gap-2 group" href="/">
+          <div className="p-2 bg-snel-gold/10 rounded-xl group-hover:bg-snel-gold/20 transition-colors">
+            <ArrowLeft className="h-5 w-5 text-snel-gold" />
+          </div>
+          <span className="text-sm font-bold uppercase tracking-widest text-foreground/70 group-hover:text-snel-gold transition-colors">Retour</span>
+        </Link>
+        <div className="ml-auto flex items-center gap-2">
+            <Zap className="h-5 w-5 text-snel-gold fill-snel-gold" />
+            <span className="text-xl font-black text-snel-gold tracking-tighter">SNEL-PAY</span>
         </div>
-        <p className="text-slate-500 font-medium">Recharge prépayée instantanée</p>
-      </div>
+      </header>
 
-      <Card className="w-full max-w-md shadow-xl border-none">
-        <CardHeader className="bg-[#003366] text-white rounded-t-xl">
-          <CardTitle>Achat de Crédit</CardTitle>
-          <CardDescription className="text-slate-300">Entrez les détails de votre compteur</CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <form onSubmit={handleStartPayment} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="meter" className="text-slate-700 font-bold">Numéro du Compteur (11 chiffres)</Label>
-              <div className="relative">
-                <Input
-                  id="meter"
-                  placeholder="Ex: 14253647586"
-                  value={meterNumber}
-                  onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, "").slice(0, 11))}
-                  className="pl-10 text-lg tracking-widest font-mono"
-                  required
-                />
-                <Smartphone className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              </div>
-              {meterNumber.length > 0 && meterNumber.length < 11 && (
-                <p className="text-xs text-amber-600 font-medium italic">Le numéro doit comporter 11 chiffres</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-slate-700 font-bold">Montant (FC)</Label>
-              <div className="grid grid-cols-3 gap-2 mb-2">
-                {QUICK_AMOUNTS.map((amt) => (
-                  <Button
-                    key={amt}
-                    type="button"
-                    variant={amount === amt.toString() ? "default" : "outline"}
-                    className={amount === amt.toString() ? "bg-[#D4AF37] text-[#003366] hover:bg-[#c4a030] font-bold border-none" : ""}
-                    onClick={() => setAmount(amt.toString())}
-                  >
-                    {amt.toLocaleString()}
-                  </Button>
-                ))}
-              </div>
-              <Input
-                type="number"
-                placeholder="Autre montant..."
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-slate-700 font-bold">Mode de Paiement</Label>
-              <Select onValueChange={(val) => setProvider(val)} value={provider || ""} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choisir un opérateur" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="M-PESA">M-PESA (Vodacom)</SelectItem>
-                  <SelectItem value="ORANGE">Orange Money</SelectItem>
-                  <SelectItem value="AIRTEL">Airtel Money</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full h-12 text-lg font-bold bg-[#003366] hover:bg-[#002244] shadow-lg shadow-blue-900/20"
-              disabled={meterNumber.length !== 11 || !amount || !provider}
+      <main className="flex-1 flex flex-col items-center justify-center p-4 py-12 md:py-24 relative">
+        <AnimatePresence mode="wait">
+          {!generatedToken ? (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-xl"
             >
-              Payer Maintenant
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-center border-t border-slate-50 pt-4 bg-slate-50/50 rounded-b-xl">
-          <p className="text-xs text-slate-400 flex items-center gap-1">
-            <CreditCard className="w-3 h-3" /> Paiement sécurisé par cryptage SSL
-          </p>
-        </CardFooter>
-      </Card>
+              <div className="mb-10 text-center space-y-2">
+                <h1 className="text-4xl font-black tracking-tight">Recharge de <span className="text-snel-gold">Crédit</span></h1>
+                <p className="text-foreground/50 font-medium">Saisissez les détails de votre compteur pour continuer.</p>
+              </div>
+
+              <Card className="border-white/10 bg-white/5 backdrop-blur-2xl shadow-3xl">
+                <CardHeader className="bg-snel-blue/20 border-b border-white/5 px-8 py-8">
+                  <CardTitle className="text-2xl">Détails de l&apos;Achat</CardTitle>
+                  <CardDescription className="text-foreground/60 font-medium">Remplissez le formulaire ci-dessous</CardDescription>
+                </CardHeader>
+                <CardContent className="p-8 space-y-8">
+                  <form onSubmit={handleStartPayment} className="space-y-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="meter" className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Numéro du Compteur (11 chiffres)</Label>
+                      <div className="relative group">
+                        <Input
+                          id="meter"
+                          placeholder="Ex: 14253647586"
+                          value={meterNumber}
+                          onChange={(e) => setMeterNumber(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                          className="h-16 pl-14 text-xl tracking-[0.2em] font-mono bg-white/5 border-white/10 focus:border-snel-gold/50 transition-all rounded-2xl"
+                          required
+                        />
+                        <Smartphone className="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-foreground/30 group-focus-within:text-snel-gold transition-colors" />
+                      </div>
+                      {meterNumber.length > 0 && meterNumber.length < 11 && (
+                        <p className="text-xs text-snel-gold/80 font-bold flex items-center gap-1">
+                          <Info className="w-3 h-3" /> Le numéro doit comporter 11 chiffres
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Montant de la Recharge (FC)</Label>
+                      <div className="grid grid-cols-3 gap-3">
+                        {QUICK_AMOUNTS.map((amt) => (
+                          <Button
+                            key={amt}
+                            type="button"
+                            variant="outline"
+                            className={cn(
+                              "h-14 font-black rounded-xl border-white/10 transition-all",
+                              amount === amt.toString()
+                                ? "bg-snel-gold text-snel-blue border-snel-gold scale-[1.02]"
+                                : "bg-white/5 hover:bg-white/10"
+                            )}
+                            onClick={() => setAmount(amt.toString())}
+                          >
+                            {amt.toLocaleString()}
+                          </Button>
+                        ))}
+                      </div>
+                      <Input
+                        type="number"
+                        placeholder="Saisir un autre montant..."
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        className="h-14 bg-white/5 border-white/10 focus:border-snel-gold/50 rounded-xl"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">Opérateur de Paiement</Label>
+                      <Select onValueChange={(val) => setProvider(val)} value={provider || ""} required>
+                        <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-xl">
+                          <SelectValue placeholder="Choisir votre opérateur" />
+                        </SelectTrigger>
+                        <SelectContent className="glass border-white/10">
+                          <SelectItem value="M-PESA" className="font-bold">M-PESA (Vodacom)</SelectItem>
+                          <SelectItem value="ORANGE" className="font-bold">Orange Money</SelectItem>
+                          <SelectItem value="AIRTEL" className="font-bold">Airtel Money</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-18 text-xl font-black bg-snel-blue hover:bg-snel-blue/90 text-white rounded-2xl shadow-2xl shadow-snel-blue/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                      disabled={meterNumber.length !== 11 || !amount || !provider}
+                    >
+                      Procéder au Paiement <ArrowRight className="ml-2 h-6 w-6" />
+                    </Button>
+                  </form>
+                </CardContent>
+                <CardFooter className="flex justify-center border-t border-white/5 py-6 bg-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-opere-emerald" /> Paiement sécurisé • Cryptage 256-bit
+                  </p>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full max-w-xl"
+            >
+              <Card className="border-none bg-white/5 backdrop-blur-2xl shadow-3xl overflow-hidden">
+                <div className="h-3 bg-opere-emerald" />
+                <CardHeader className="text-center pt-12 pb-8">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", damping: 12 }}
+                    className="mx-auto w-24 h-24 bg-opere-emerald/10 rounded-3xl flex items-center justify-center mb-6"
+                  >
+                    <CheckCircle2 className="w-14 h-14 text-opere-emerald" />
+                  </motion.div>
+                  <CardTitle className="text-4xl font-black tracking-tight">Achat Réussi !</CardTitle>
+                  <CardDescription className="text-foreground/50 font-medium text-lg mt-2">Votre jeton STS est prêt à l&apos;emploi</CardDescription>
+                </CardHeader>
+                <CardContent className="px-8 pb-10 space-y-8">
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-opere-cyan/20 blur-3xl rounded-full opacity-20 -z-10" />
+                    <div className="bg-foreground/5 border border-white/10 p-10 rounded-3xl text-center space-y-4">
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-snel-gold">TOKEN DE RECHARGE (20 CHIFFRES)</p>
+                      <p className="text-4xl md:text-5xl font-mono font-black tracking-tight text-white selection:bg-snel-gold selection:text-snel-blue">
+                        {generatedToken}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      variant="outline"
+                      className="h-14 gap-2 font-black rounded-2xl border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                      onClick={copyToken}
+                    >
+                      <Copy className="w-5 h-5" /> COPIER
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-14 gap-2 font-black rounded-2xl border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                    >
+                      <Share2 className="w-5 h-5" /> PARTAGER
+                    </Button>
+                  </div>
+
+                  <div className="pt-8 border-t border-white/5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-black uppercase tracking-widest text-foreground/40">Compteur</span>
+                      <span className="font-mono font-bold text-lg">{meterNumber}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-black uppercase tracking-widest text-foreground/40">Montant Payé</span>
+                      <span className="font-black text-xl text-snel-gold">{Number(amount).toLocaleString()} FC</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-black uppercase tracking-widest text-foreground/40">Énergie Estimée</span>
+                      <span className="font-black text-xl text-opere-emerald">{(Number(amount) / 330).toFixed(1)} kWh</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="p-8 bg-white/5">
+                  <Button
+                    className="w-full h-16 text-lg font-black bg-snel-blue hover:bg-snel-blue/90 text-white rounded-2xl cursor-pointer"
+                    onClick={() => {
+                      setGeneratedToken(null);
+                      setAmount("");
+                      setMeterNumber("");
+                      setProvider("");
+                    }}
+                  >
+                    Effectuer un Nouvel Achat
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
 
       <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Validation du Paiement</DialogTitle>
-            <DialogDescription>
-              Une demande USSD va être envoyée à votre téléphone.
+        <DialogContent className="sm:max-w-md glass border-white/10 rounded-[2rem] p-8">
+          <DialogHeader className="space-y-4">
+            <DialogTitle className="text-3xl font-black tracking-tight text-center">Validation <span className="text-snel-gold">Mobile</span></DialogTitle>
+            <DialogDescription className="text-center font-medium text-foreground/60">
+              Une demande de paiement va être envoyée à votre téléphone.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center py-8 space-y-4">
-            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center animate-pulse">
-              <Smartphone className="w-10 h-10 text-[#003366]" />
+          <div className="flex flex-col items-center justify-center py-10 space-y-6">
+            <div className="relative">
+                <div className="absolute inset-0 bg-snel-blue/40 blur-2xl rounded-full animate-pulse" />
+                <div className="relative w-24 h-24 bg-snel-blue/20 rounded-[2rem] flex items-center justify-center border border-white/10">
+                    <Smartphone className="w-12 h-12 text-snel-gold animate-bounce" />
+                </div>
             </div>
-            <div className="text-center">
-              <p className="font-bold text-lg">Attente de confirmation...</p>
-              <p className="text-sm text-slate-500">Veuillez saisir votre code PIN sur votre mobile.</p>
+            <div className="text-center space-y-2">
+              <p className="font-black text-xl tracking-tight">Attente de confirmation...</p>
+              <p className="text-sm font-medium text-foreground/40">Veuillez saisir votre code PIN on votre mobile.</p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-lg border w-full text-sm">
-              <div className="flex justify-between mb-1">
-                <span className="text-slate-500">Opérateur:</span>
-                <span className="font-bold">{provider}</span>
+            <div className="bg-white/5 p-6 rounded-2xl border border-white/5 w-full space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/40">Opérateur</span>
+                <span className="font-bold text-opere-blue">{provider}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Montant:</span>
-                <span className="font-bold">{Number(amount).toLocaleString()} FC</span>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/40">Montant</span>
+                <span className="font-black text-xl text-snel-gold">{Number(amount).toLocaleString()} FC</span>
               </div>
             </div>
           </div>
-          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+          <DialogFooter className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="ghost"
+              className="h-14 font-bold rounded-xl hover:bg-white/5 transition-all"
               onClick={() => setShowPaymentModal(false)}
               disabled={isProcessing}
             >
               Annuler
             </Button>
             <Button
-              className="bg-[#003366]"
+              className="flex-1 h-14 bg-snel-gold text-snel-blue font-black rounded-xl hover:bg-snel-gold/90 transition-all shadow-xl shadow-snel-gold/20"
               onClick={simulatePayment}
               disabled={isProcessing}
             >
-              {isProcessing ? "Traitement..." : "Simuler Validation (OK)"}
+              {isProcessing ? "Traitement en cours..." : "Simuler Validation (OK)"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </main>
+    </div>
   );
 }
