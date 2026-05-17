@@ -1,11 +1,16 @@
+"use client"
+
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Zap, ShieldCheck, Clock, Smartphone, ArrowRight, MessageCircle } from "lucide-react";
+import { Zap, ShieldCheck, Clock, Smartphone, ArrowRight, MessageCircle, Menu, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen text-foreground selection:bg-opere-cyan/30">
       {/* Header */}
@@ -16,7 +21,9 @@ export default function LandingPage() {
           </div>
           <span className="text-2xl font-black tracking-tighter text-snel-gold">SNEL-PAY</span>
         </Link>
-        <nav className="ml-auto flex items-center gap-6 sm:gap-8">
+
+        {/* Desktop Nav */}
+        <nav className="ml-auto hidden md:flex items-center gap-8">
           <Link className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-snel-gold transition-colors" href="#features">
             Avantages
           </Link>
@@ -28,7 +35,29 @@ export default function LandingPage() {
           </Link>
           <ThemeToggle />
         </nav>
+
+        {/* Mobile Nav Toggle */}
+        <div className="ml-auto flex items-center gap-4 md:hidden">
+            <ThemeToggle />
+            <Button aria-label="Toggle menu" variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? <X /> : <Menu />}
+            </Button>
+        </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-background md:hidden pt-24 px-6 flex flex-col gap-6">
+            <Link onClick={() => setIsMenuOpen(false)} className="text-2xl font-black uppercase tracking-widest" href="#features">Avantages</Link>
+            <Link onClick={() => setIsMenuOpen(false)} className="text-2xl font-black uppercase tracking-widest" href="#how-it-works">Guide</Link>
+            <Link onClick={() => setIsMenuOpen(false)} className="text-2xl font-black uppercase tracking-widest" href="/login">Connexion</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/buy">
+                <Button className="w-full bg-snel-blue text-white font-bold h-14 rounded-xl mt-4">
+                    Recharger maintenant
+                </Button>
+            </Link>
+        </div>
+      )}
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -44,14 +73,14 @@ export default function LandingPage() {
                   Rechargez votre compteur SNEL prépayé en quelques secondes. Une expérience premium, fluide et entièrement sécurisée.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 pt-8">
-                <Link href="/buy">
-                  <Button className="bg-snel-blue hover:bg-snel-blue/90 text-white px-10 py-8 text-xl font-bold rounded-2xl shadow-2xl shadow-snel-blue/20 transition-all hover:scale-105 active:scale-95 border border-white/10 cursor-pointer">
+              <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto">
+                <Link href="/buy" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto bg-snel-blue hover:bg-snel-blue/90 text-white px-10 py-8 text-xl font-bold rounded-2xl shadow-2xl shadow-snel-blue/20 transition-all hover:scale-105 active:scale-95 border border-white/10 cursor-pointer">
                     Recharger maintenant <ArrowRight className="ml-2 h-6 w-6" />
                   </Button>
                 </Link>
-                <Link href="#" target="_blank">
-                  <Button className="btn-whatsapp-gradient text-white px-10 py-8 text-xl font-bold rounded-2xl transition-all hover:scale-105 active:scale-95 cursor-pointer">
+                <Link href="#" target="_blank" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto btn-whatsapp-gradient text-white px-10 py-8 text-xl font-bold rounded-2xl transition-all hover:scale-105 active:scale-95 cursor-pointer">
                     Aide via WhatsApp <MessageCircle className="ml-2 h-6 w-6" />
                   </Button>
                 </Link>

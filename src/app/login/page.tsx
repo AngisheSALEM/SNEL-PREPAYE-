@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Zap, ArrowRight } from "lucide-react"
+import { Zap, ArrowRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -30,7 +30,12 @@ export default function LoginPage() {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-4">
+      <main className="flex-1 flex flex-col items-center justify-center p-4">
+        <div className="mb-6 w-full max-w-md">
+            <Link href="/" className="inline-flex items-center text-[10px] font-black uppercase tracking-widest text-foreground/40 hover:text-snel-gold transition-colors">
+                <ArrowLeft className="mr-2 h-3 w-3" /> Accueil
+            </Link>
+        </div>
         <Card className="w-full max-w-md border-border bg-muted/50 backdrop-blur-xl shadow-2xl">
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-black tracking-tight">Connexion</CardTitle>
@@ -40,11 +45,11 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-foreground/50">Email</Label>
+              <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-foreground/50">Email</Label>
               <Input id="email" type="email" placeholder="nom@exemple.com" className="h-12 rounded-xl bg-background/50 border-border text-foreground" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-xs font-black uppercase tracking-widest text-foreground/50">Mot de passe</Label>
+              <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-foreground/50">Mot de passe</Label>
               <Input id="password" type="password" className="h-12 rounded-xl bg-background/50 border-border text-foreground" />
             </div>
             <Link href="/dashboard">
