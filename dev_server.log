@@ -5,20 +5,12 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 742ms
+✓ Ready in 519ms
 
 ○ Compiling / ...
- GET / 200 in 5.5s (next.js: 5.0s, application-code: 503ms)
- GET /login 200 in 1064ms (next.js: 951ms, application-code: 113ms)
- GET /dashboard 200 in 994ms (next.js: 928ms, application-code: 66ms)
- GET /dashboard/history 200 in 841ms (next.js: 777ms, application-code: 64ms)
- GET /dashboard/payments 200 in 829ms (next.js: 735ms, application-code: 95ms)
- GET /dashboard/settings 200 in 1226ms (next.js: 1189ms, application-code: 38ms)
- GET /admin 200 in 1096ms (next.js: 933ms, application-code: 163ms)
- GET / 200 in 82ms (next.js: 4ms, application-code: 78ms)
- GET /login 200 in 142ms (next.js: 18ms, application-code: 123ms)
- GET /dashboard 200 in 55ms (next.js: 7ms, application-code: 47ms)
- GET /dashboard/history 200 in 51ms (next.js: 27ms, application-code: 24ms)
- GET /dashboard/payments 200 in 32ms (next.js: 5ms, application-code: 27ms)
- GET /dashboard/settings 200 in 41ms (next.js: 4ms, application-code: 37ms)
- GET /admin 200 in 81ms (next.js: 4ms, application-code: 77ms)
+ GET / 200 in 5.0s (next.js: 4.3s, proxy.ts: 245ms, application-code: 512ms)
+ GET /login 200 in 1258ms (next.js: 1187ms, proxy.ts: 8ms, application-code: 62ms)
+ GET /dashboard 200 in 1782ms (next.js: 1697ms, proxy.ts: 22ms, application-code: 64ms)
+ GET /dashboard 200 in 245ms (next.js: 8ms, proxy.ts: 15ms, application-code: 222ms)
+ GET /login 200 in 45ms (next.js: 4ms, proxy.ts: 8ms, application-code: 32ms)
+ GET /dashboard 200 in 48ms (next.js: 5ms, proxy.ts: 9ms, application-code: 34ms)

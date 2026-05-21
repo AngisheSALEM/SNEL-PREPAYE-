@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/lib/auth"
 
 export default function DashboardLayout({
   children,
@@ -23,6 +24,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { logout } = useAuth()
 
   const navItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -84,11 +86,13 @@ export default function DashboardLayout({
           })}
         </nav>
 
-        <Link href="/">
-            <Button variant="ghost" className="w-full justify-start gap-3 rounded-xl text-destructive hover:bg-destructive/10">
-            <LogOut className="h-5 w-5" /> Déconnexion
-            </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3 rounded-xl text-destructive hover:bg-destructive/10"
+          onClick={() => logout()}
+        >
+          <LogOut className="h-5 w-5" /> Déconnexion
+        </Button>
       </aside>
 
       {/* Main Content Area */}
