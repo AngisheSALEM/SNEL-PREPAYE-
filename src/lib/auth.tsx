@@ -2,11 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import Cookies from "js-cookie"
 
 export interface User {
   id: string
-  name: string
+  name: string | null
   email: string
   avatar?: string
 }
@@ -28,57 +27,75 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
-    // Check for user in localStorage and cookie
-    const checkAuth = () => {
-      const savedUser = localStorage.getItem("snel-pay-user")
-      const sessionCookie = Cookies.get("snel-pay-session")
-
-      if (savedUser && sessionCookie) {
-        setUser(JSON.parse(savedUser))
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/me")
+        const data = await response.json()
+        if (data.user) {
+          setUser(data.user)
+          localStorage.setItem("snel-pay-user", JSON.stringify(data.user))
+        } else {
+          setUser(null)
+          localStorage.removeItem("snel-pay-user")
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error)
+        setUser(null)
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
     checkAuth()
   }, [])
 
-  const login = async (email: string, _password?: string) => {
+  const login = async (email: string, password?: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
 
-      const mockUser: User = {
-        id: "1",
-        name: "Jean Dupont",
-        email: email,
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed")
       }
 
-      localStorage.setItem("snel-pay-user", JSON.stringify(mockUser))
-      Cookies.set("snel-pay-session", "mock-token", { expires: 7 })
-      setUser(mockUser)
+      localStorage.setItem("snel-pay-user", JSON.stringify(data))
+      setUser(data)
       router.push("/dashboard")
+    } catch (error) {
+      console.error("Login error:", error)
+      throw error
     } finally {
       setIsLoading(false)
     }
   }
 
-  const signup = async (name: string, email: string, _password?: string) => {
+  const signup = async (name: string, email: string, password?: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      })
 
-      const mockUser: User = {
-        id: "1",
-        name: name,
-        email: email,
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Signup failed")
       }
 
-      localStorage.setItem("snel-pay-user", JSON.stringify(mockUser))
-      Cookies.set("snel-pay-session", "mock-token", { expires: 7 })
-      setUser(mockUser)
+      localStorage.setItem("snel-pay-user", JSON.stringify(data))
+      setUser(data)
       router.push("/dashboard")
+    } catch (error) {
+      console.error("Signup error:", error)
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -87,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithGoogle = async () => {
     setIsLoading(true)
     try {
-      // Simulate Google OAuth
+      // For the prototype, we still simulate Google OAuth but we could link it to a user in DB
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
       const mockUser: User = {
@@ -97,7 +114,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       localStorage.setItem("snel-pay-user", JSON.stringify(mockUser))
-      Cookies.set("snel-pay-session", "google-mock-token", { expires: 7 })
       setUser(mockUser)
       router.push("/dashboard")
     } finally {
@@ -105,11 +121,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem("snel-pay-user")
-    Cookies.remove("snel-pay-session")
-    setUser(null)
-    router.push("/login")
+  const logout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+    } catch (error) {
+      console.error("Logout error:", error)
+    } finally {
+      localStorage.removeItem("snel-pay-user")
+      setUser(null)
+      router.push("/login")
+    }
   }
 
   return (
